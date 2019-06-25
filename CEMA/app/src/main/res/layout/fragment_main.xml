@@ -31,17 +31,15 @@
             android:layout_marginStart="8dp"
             app:layout_constraintHorizontal_bias="1.0" android:id="@+id/linearLayout" android:gravity="center">
         <Button
-                android:text="모두 선택"
                 android:layout_width="100dp"
-                android:layout_height="50dp" android:id="@+id/all" android:layout_marginBottom="16dp"
+                android:layout_height="53dp" android:id="@+id/all" android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="84dp"
                 android:layout_marginTop="10dp"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
-                android:gravity="center" android:layout_gravity="center" android:background="@drawable/btn"/>
+                android:gravity="center" android:layout_gravity="center" android:background="@drawable/select"/>
         <Button
-                android:text="종 료"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
@@ -51,7 +49,7 @@
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 app:layout_constraintHorizontal_bias="0.503" android:layout_gravity="center" android:gravity="center"
-                android:background="@drawable/btn"/>
+                android:background="@drawable/exit"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
 
