@@ -57,7 +57,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             })
 
         }
+        presenter.requestData("202")
         presenter.requestData("203")
+        Thread.sleep(1000)
+
     }
 
     override fun success(text: String) {
@@ -82,8 +85,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         this.arr = arr
         this.classInfo = classInfo
         binding.pager.adapter = PagerAdapter(supportFragmentManager, binding.tabCategory.tabCount, info)
-
     }
+
+
 
     companion object {
         private const val USER_INFO = "USER_INFO"
@@ -97,7 +101,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         override fun getItem(i: Int): Fragment? {
             when (i) {
                 0 -> {
-                    return MainFragment(arr!!, presenter,classInfo!!)
+                    return SubFragment(presenter)
                 }
                 1 -> {
                     return MainFragment(arr!!, presenter,classInfo!!)

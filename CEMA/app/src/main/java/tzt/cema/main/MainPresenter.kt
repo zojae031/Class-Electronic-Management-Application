@@ -31,7 +31,10 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
                     val classInfo = obj.get("class").asString
                     val ele = JsonParser().parse(obj.get("pc").asString)
                     val array = ele.asJsonArray
-                    view.setFragmentInfo(array,classInfo)
+
+                    view.setFragmentInfo(array, classInfo)
+
+
                     adapter.notifyDataSetChanged()
                 }
                 , { view.fail() }
@@ -44,7 +47,7 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
         this.adapter = adapter
     }
 
-    override fun requestData(classInfo:String) {
+    override fun requestData(classInfo: String) {
         Thread.sleep(1000)
         JsonObject().apply {
             addProperty("type", "get")
