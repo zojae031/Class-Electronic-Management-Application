@@ -1,6 +1,7 @@
 package tzt.cema.main
 
 import com.google.gson.JsonArray
+import tzt.cema.databinding.FragmentMainBinding
 
 interface MainContract {
     interface View {

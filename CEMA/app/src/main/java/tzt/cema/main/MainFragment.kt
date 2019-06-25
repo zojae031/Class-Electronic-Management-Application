@@ -2,7 +2,6 @@ package tzt.cema.main
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.graphics.Paint
@@ -14,8 +13,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.cell.view.*
 import tzt.cema.R
 import tzt.cema.databinding.FragmentMainBinding
@@ -23,14 +22,16 @@ import tzt.cema.dto.PC
 
 
 @SuppressLint("ValidFragment")
-class MainFragment(private val arr: JsonArray) : Fragment() {
+class MainFragment(private val arr: JsonArray, private val presenter: MainPresenter) : Fragment() {
 
     internal lateinit var view: FragmentMainBinding
-    lateinit var mAdapter: MyAdapter
+    private lateinit var mAdapter: MyAdapter
     private lateinit var manager: GridLayoutManager
+    private var pcState = MutableList(40) { PC() }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         if (!::view.isInitialized) {
+
             view = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
             view.apply {
                 mAdapter = MyAdapter()
@@ -39,7 +40,30 @@ class MainFragment(private val arr: JsonArray) : Fragment() {
                 manager = GridLayoutManager(view.root.context, 8)
                 rv.layoutManager = manager
                 screen.paintFlags = Paint.UNDERLINE_TEXT_FLAG;
+                button.setOnClickListener {
+                    //TODO 클릭된 버튼 전송하기
+                    val numArr = MutableList(40) { -1 }
+                    var idx = 0
+                    for (i in pcState) {
+                        if (i.state == State.SELECT) {
+                            numArr.add(idx++, i.num)
+                        }
+                    }
+                    JsonObject().apply {
+                        addProperty("type","close")
+                        addProperty("class","203")
+                        val array = JsonArray()
+                        for(i in 0 until idx){
+                            val data = JsonObject()
+                            data.addProperty("num",numArr[i])
+                            array.add(data)
+                        }
 
+                        addProperty("pc",array.toString())
+                        presenter.sendMessage(this.toString())
+                    }
+
+                }
 
             }
 
@@ -55,7 +79,7 @@ class MainFragment(private val arr: JsonArray) : Fragment() {
 
     inner class MyAdapter : RecyclerView.Adapter<ViewHolder>() {
         private var arr: JsonArray? = null
-        private var pcState = MutableList(40) { PC() }
+
         fun setData(arr: JsonArray) {
             this.arr = arr
         }
@@ -73,10 +97,10 @@ class MainFragment(private val arr: JsonArray) : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, pos: Int) {
             val state = arr!!.get(pos).asJsonObject.get("flag").asBoolean
             pcState[pos].ip = arr!!.get(pos).asJsonObject.get("ip").asString
-
+            pcState[pos].num = pos + 1
             holder.btn.run {
-                text = (pos + 1).toString()
-                if(pcState[pos].state!=State.SELECT) {
+                text = pcState[pos].num.toString()
+                if (pcState[pos].state != State.SELECT) {
                     if (state) {
                         pcState[pos].state = State.ON
                     } else {
@@ -84,7 +108,11 @@ class MainFragment(private val arr: JsonArray) : Fragment() {
                     }
                 }
                 setOnClickListener {
-                    pcState[pos].state = State.SELECT
+                    if (pcState[pos].state == State.ON) {
+                        pcState[pos].state = State.SELECT
+                    } else if (pcState[pos].state == State.SELECT) {
+                        pcState[pos].state = State.ON
+                    }
                     notifyDataSetChanged()
                 }
 

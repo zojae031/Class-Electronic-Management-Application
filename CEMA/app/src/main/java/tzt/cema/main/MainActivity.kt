@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         override fun getItem(i: Int): Fragment? {
             when (i) {
                 0 -> {
-                    return MainFragment(arr!!)
+                    return MainFragment(arr!!,presenter)
                 }
                 1 -> {
                     return SeebalFragment()

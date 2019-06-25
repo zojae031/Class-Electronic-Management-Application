@@ -6,12 +6,13 @@ import com.google.gson.JsonParser
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import tzt.cema.databinding.FragmentMainBinding
 import tzt.cema.util.RxSocket
 
 class MainPresenter(private val view: MainContract.View) : MainContract.Presenter {
     private var disposable: Disposable? = null
     private var socket: RxSocket? = null
-
+    private lateinit var frgView : FragmentMainBinding
     override fun connectServer() {
         socket = RxSocket()
         disposable = socket!!.connect()
@@ -24,7 +25,7 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
                 disposable?.dispose()
             }
             .subscribe(
-                { jsonData ->
+                { jsonData -> //TODO 변경된 데이터 뿌려주기 frgView로
                     val obj = JsonParser().parse(jsonData).asJsonObject
                     val ele = JsonParser().parse(obj.get("pc").asString)
                     val array = ele.asJsonArray
@@ -40,6 +41,7 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
 
 
     }
+
 
     override fun requestData() {
         Thread.sleep(1000)
