@@ -2,16 +2,19 @@ package tzt.cema.main
 
 import android.annotation.SuppressLint
 import android.databinding.DataBindingUtil
+import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.google.gson.JsonArray
+import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.cell.view.*
 import tzt.cema.R
 import tzt.cema.databinding.FragmentMainBinding
@@ -65,7 +68,17 @@ class MainFragment(private val arr: JsonArray) : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, pos: Int) {
-            holder.btn.text = arr!!.get(pos).toString()
+            holder.btn.run {
+                text = (pos + 1).toString()
+
+                if (arr!!.get(pos).asJsonObject.get("flag").asBoolean) {
+                    setBackgroundColor(Color.BLUE)
+                } else {
+                    setBackgroundColor(Color.RED)
+                }
+
+            }
+            
 
         }
 

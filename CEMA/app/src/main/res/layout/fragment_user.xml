@@ -15,9 +15,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/infomation"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
                 android:text="여기는 정보가 들어오는곳"
-                android:layout_marginStart="8dp" android:layout_weight="8"/>
+                android:layout_weight="8" android:layout_margin="12dp"
+                android:padding="8dp" android:textColor="#FFFFFF"/>
     </LinearLayout>
 </layout>
