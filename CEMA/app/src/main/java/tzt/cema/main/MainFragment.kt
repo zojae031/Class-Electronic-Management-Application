@@ -138,13 +138,13 @@ class MainFragment(private val arr: JsonArray, private val presenter: MainPresen
 
                 when (pcState[pos].state) {
                     State.ON -> {
-                        setBackgroundColor(Color.BLUE)
+                        setBackgroundColor(Color.parseColor("#00DD00"))
                     }
                     State.OFF -> {
-                        setBackgroundColor(Color.RED)
+                        setBackgroundColor(Color.GRAY)
                     }
                     State.SELECT -> {
-                        setBackgroundColor(Color.GRAY)
+                        setBackgroundColor(Color.parseColor("#008800"))
                     }
                 }
 
