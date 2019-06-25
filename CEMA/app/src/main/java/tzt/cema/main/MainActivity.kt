@@ -17,7 +17,7 @@ import tzt.cema.dto.User
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     private val presenter = MainPresenter(this@MainActivity)
-    private val adapter by lazy { PagerAdapter(supportFragmentManager, binding.tabCategory.tabCount) }
+
     private val binding: ActivityMainBinding by lazy {
         setContentView<ActivityMainBinding>(
             this, tzt.cema.R.layout.activity_main
@@ -27,11 +27,14 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val info = intent.extras.get(USER_INFO) as User
+
         binding.run {
             tabCategory.addTab(binding.tabCategory.newTab().setText("202호"))
             tabCategory.addTab(binding.tabCategory.newTab().setText("203호"))
+            tabCategory.addTab(binding.tabCategory.newTab().setText("사용자"))
             tabCategory.tabGravity = TabLayout.GRAVITY_FILL
-            pager.adapter = adapter
+            pager.adapter = PagerAdapter(supportFragmentManager, binding.tabCategory.tabCount, info)
             pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tabCategory))
             tabCategory.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
@@ -47,6 +50,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 }
 
             })
+
         }
 
     }
@@ -63,7 +67,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
 
-    inner class PagerAdapter(fm: FragmentManager, private val tabNum: Int) : FragmentStatePagerAdapter(fm) {
+    inner class PagerAdapter(fm: FragmentManager, private val tabNum: Int, private val user: User) :
+        FragmentStatePagerAdapter(fm) {
         override fun getItem(i: Int): Fragment? {
             when (i) {
                 0 -> {
@@ -71,6 +76,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                 }
                 1 -> {
                     return MainFragment()
+                }
+                2 -> {
+                    return UserFragment(user)
                 }
             }
             return null

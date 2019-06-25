@@ -20,7 +20,7 @@ class LoginPresenter(private val view: LoginContract.View) : LoginContract.Prese
             super.handleMessage(msg)
             with(msg?.data) {
                 val result = this?.get("html") as Elements
-                User(result[2].text(), result[3].text()).run {
+                User(result[2].text(), result[3].text(), msg!!.arg1.toString()).run {
                     view.startActivity(this)
                 }
             }

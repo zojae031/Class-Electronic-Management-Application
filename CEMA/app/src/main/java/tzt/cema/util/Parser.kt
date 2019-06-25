@@ -60,6 +60,7 @@ object Parser {
             bundle.putSerializable("html", data)
 
             msg.data = bundle
+            msg.arg1 = id.toInt()
             handler.sendMessage(msg)
         }.start()
     }

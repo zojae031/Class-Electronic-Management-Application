@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+
+        <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/image"
+                android:layout_marginStart="16dp" android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:scaleType="fitCenter" android:adjustViewBounds="true" android:cropToPadding="true"
+                android:background="@mipmap/jaeho" android:layout_weight="2"/>
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/infomation"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+                android:text="여기는 정보가 들어오는곳"
+                android:layout_marginStart="8dp" android:layout_weight="8"/>
+    </LinearLayout>
+</layout>

@@ -7,14 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import tzt.cema.R
-import tzt.cema.databinding.FragmentBinding
+import tzt.cema.databinding.FragmentMainBinding
+
 
 class MainFragment : Fragment() {
-    internal lateinit var view :FragmentBinding
+
+    internal var view: FragmentMainBinding?=null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        view = DataBindingUtil.inflate(inflater,R.layout.fragment,container,false)
-
-        return view.root
+        if (view == null) {
+            view = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
+        }
+        return view!!.root
     }
 }
