@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
+import com.google.gson.JsonArray
 import tzt.cema.databinding.ActivityMainBinding
 import tzt.cema.dto.User
 
@@ -18,7 +19,8 @@ import tzt.cema.dto.User
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     private val presenter = MainPresenter(this@MainActivity)
-
+    private var arr: JsonArray? = null
+    private val info by lazy { intent.extras.get(USER_INFO) as User }
     private val binding: ActivityMainBinding by lazy {
         setContentView<ActivityMainBinding>(
             this, tzt.cema.R.layout.activity_main
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val info = intent.extras.get(USER_INFO) as User
+
         presenter.connectServer()
 
         binding.run {
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             tabCategory.addTab(binding.tabCategory.newTab().setText("203호"))
             tabCategory.addTab(binding.tabCategory.newTab().setText("사용자"))
             tabCategory.tabGravity = TabLayout.GRAVITY_FILL
-            pager.adapter = PagerAdapter(supportFragmentManager, binding.tabCategory.tabCount, info)
+
             pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tabCategory))
             tabCategory.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
@@ -58,7 +60,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun success(text: String) {
-        Log.e("text",text)
+        Log.e("text", text)
     }
 
     override fun fail() {
@@ -74,6 +76,12 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onDestroy()
     }
 
+
+    override fun setFragmentInfo(arr: JsonArray) {
+        this.arr = arr
+        binding.pager.adapter = PagerAdapter(supportFragmentManager, binding.tabCategory.tabCount, info)
+    }
+
     companion object {
         private const val USER_INFO = "USER_INFO"
         fun getIntent(context: Context?, user: User) = Intent(context, MainActivity::class.java).apply {
@@ -81,16 +89,15 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
     }
 
-
     inner class PagerAdapter(fm: FragmentManager, private val tabNum: Int, private val user: User) :
         FragmentStatePagerAdapter(fm) {
         override fun getItem(i: Int): Fragment? {
             when (i) {
                 0 -> {
-                    return MainFragment()
+                    return MainFragment(arr!!)
                 }
                 1 -> {
-                    return MainFragment()
+                    return SeebalFragment()
                 }
                 2 -> {
                     return UserFragment(user)
