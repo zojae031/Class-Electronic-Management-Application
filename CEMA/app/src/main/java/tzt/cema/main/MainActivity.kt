@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun setFragmentInfo(arr: JsonArray) {
         this.arr = arr
         binding.pager.adapter = PagerAdapter(supportFragmentManager, binding.tabCategory.tabCount, info)
+        (binding.pager.adapter as PagerAdapter).notifyDataSetChanged() //TODO 오류 예상
     }
 
     companion object {

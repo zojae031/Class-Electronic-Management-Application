@@ -40,7 +40,7 @@ class MainFragment(private val arr: JsonArray, private val presenter: MainPresen
                 manager = GridLayoutManager(view.root.context, 8)
                 rv.layoutManager = manager
                 screen.paintFlags = Paint.UNDERLINE_TEXT_FLAG;
-                button.setOnClickListener {
+                exit.setOnClickListener {
                     //TODO 클릭된 버튼 전송하기
                     val numArr = MutableList(40) { -1 }
                     var idx = 0
@@ -50,19 +50,27 @@ class MainFragment(private val arr: JsonArray, private val presenter: MainPresen
                         }
                     }
                     JsonObject().apply {
-                        addProperty("type","close")
-                        addProperty("class","203")
+                        addProperty("type", "close")
+                        addProperty("class", "203")
                         val array = JsonArray()
-                        for(i in 0 until idx){
+                        for (i in 0 until idx) {
                             val data = JsonObject()
-                            data.addProperty("num",numArr[i])
+                            data.addProperty("num", numArr[i])
                             array.add(data)
                         }
 
-                        addProperty("pc",array.toString())
+                        addProperty("pc", array.toString())
                         presenter.sendMessage(this.toString())
                     }
 
+                }
+                all.setOnClickListener {
+                    for (i in 0 until 40) {
+                        if (pcState[i].state == State.ON) {
+                            pcState[i].state = State.SELECT
+                        }
+                    }
+                    mAdapter.notifyDataSetChanged()
                 }
 
             }

@@ -12,7 +12,6 @@ import tzt.cema.util.RxSocket
 class MainPresenter(private val view: MainContract.View) : MainContract.Presenter {
     private var disposable: Disposable? = null
     private var socket: RxSocket? = null
-    private lateinit var frgView : FragmentMainBinding
     override fun connectServer() {
         socket = RxSocket()
         disposable = socket!!.connect()
