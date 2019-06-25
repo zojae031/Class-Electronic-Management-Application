@@ -31,7 +31,7 @@ public class AppServer extends Thread{
             System.out.println("AppServer ERROR");
         }
     }
-    public void close(String s){
-        pcServer.sendMsg(s);
-    }
+//    public void close(String s){
+//        pcServer.sendMsg(s);
+//    }
 }

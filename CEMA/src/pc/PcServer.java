@@ -1,7 +1,9 @@
 package pc;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,14 +14,22 @@ public class PcServer extends Thread {
     private ServerSocket pcServerSocket;
     private Socket socket;
     private ArrayList<PcSocket> pcs;
+    private JsonParser parser;
 
     private boolean statePC[][][] = {
             {{false},{false}},
-            {{false,false,false,false,false,false,false,false},
-            {false,false,false,false,false,false,false,false},
-            {false,false,false,false,false,false,false,false},
-            {false,false,false,false,false,false,false,false},
-            {false,false,false,false,false,false,false,false}}};
+
+            {{false,false,true,false,true,true,false,false},
+             {true,false,false,false,true,false,true,false},
+             {true,false,true,false,false,false,false,false},
+             {false,false,false,false,true,false,false,false},
+             {false,false,true,false,false,false,false,true}},
+//            {{false,false,false,false,false,false,false,false},
+//            {false,false,false,false,false,false,false,false},
+//            {false,false,false,false,false,false,false,false},
+//            {false,false,false,false,false,false,false,false},
+//            {false,false,false,false,false,false,false,false}}
+    };
 
     synchronized public static PcServer getInstance(){
         if(pcServer == null) pcServer = new PcServer();
@@ -28,6 +38,7 @@ public class PcServer extends Thread {
 
     public PcServer(){
         pcs = new ArrayList<PcSocket>();
+        parser = new JsonParser();
     }
     @Override
     public void run(){
@@ -65,9 +76,25 @@ public class PcServer extends Thread {
         this.statePC[room][y][x] = false;
     }
 
-    public void sendMsg(String pc){
+    public void sendMsg(String pc, String room){
+        JsonElement element = parser.parse(pc);
+        JsonArray jsonArray = element.getAsJsonArray();
+        int i = 0;
+
+        for(int j = 0; j < jsonArray.size(); j++){
+            JsonObject object = (JsonObject) jsonArray.get(j);
+           // System.out.println(object);
+            String pc_id = room+ "_"+object.get("num").getAsString();
+            int r = room.equals("202") ? 0 : 1;
+            int number = Integer.valueOf(pc_id.substring(4,pc_id.length())) - 1;
+            int y = number / PcConstants.PCIP[r][0].length;
+            int x = number - y * PcConstants.PCIP[r][0].length;
+            PcServer.getInstance().setStatePC(r, y, x);
+        }
         for (PcSocket socketPc : pcs) {
-            if(socketPc.checkId(pc)) {
+            JsonObject object = (JsonObject) jsonArray.get(i++);
+            System.out.println(object);
+            if(socketPc.checkId(room+ "_"+object.get("num").getAsString())) {
                 socketPc.sendClose();
                 break;
             }
@@ -80,7 +107,6 @@ public class PcServer extends Thread {
     }
     public JsonArray getState(int room) {
         JsonArray arr = new JsonArray();
-
         for(int i = 0; i < statePC[room].length; i++){
 
             for(int j = 0; j < statePC[room][i].length; j++){

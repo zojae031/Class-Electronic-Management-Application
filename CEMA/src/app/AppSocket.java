@@ -38,7 +38,10 @@ public class AppSocket extends Thread {
                 System.out.println(msg);
                 if(msg == null) break;
                 object = (JsonObject) parser.parse(msg);
-                outMsg.println(reaction.reaction(object).toString());
+                object = reaction.reaction(object);
+                System.out.println(object);
+                outMsg.println(object.toString());
+
             }
         }catch (Exception e){
             System.out.println("AppSocket ERROR");

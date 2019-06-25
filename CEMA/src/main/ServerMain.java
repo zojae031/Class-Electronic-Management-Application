@@ -22,7 +22,7 @@ public class ServerMain {
         btn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                appServer.close(textField.getText().toString());
+               // appServer.close(textField.getText().toString());
             }
         });
         frame.getContentPane().add(textField);
