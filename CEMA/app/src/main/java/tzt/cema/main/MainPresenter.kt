@@ -6,12 +6,12 @@ import com.google.gson.JsonParser
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import tzt.cema.databinding.FragmentMainBinding
 import tzt.cema.util.RxSocket
 
 class MainPresenter(private val view: MainContract.View) : MainContract.Presenter {
     private var disposable: Disposable? = null
     private var socket: RxSocket? = null
+    private lateinit var adapter: MainFragment.MyAdapter
     override fun connectServer() {
         socket = RxSocket()
         disposable = socket!!.connect()
@@ -23,30 +23,31 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
                 closeSocket()
                 disposable?.dispose()
             }
+            .doOnComplete { Log.e("doOnComplete", "완료") }
+            .doOnNext { Log.e("doOnNext", "next") }
             .subscribe(
-                { jsonData -> //TODO 변경된 데이터 뿌려주기 frgView로
-                    val obj = JsonParser().parse(jsonData).asJsonObject
+                {
+                    val obj = JsonParser().parse(it).asJsonObject
                     val ele = JsonParser().parse(obj.get("pc").asString)
                     val array = ele.asJsonArray
                     view.setFragmentInfo(array)
-                    for(i in array){
-                        Log.e("array : ",i.toString())
-                    }
-
+                    adapter.notifyDataSetChanged()
                 }
                 , { view.fail() }
             )
 
 
-
     }
 
+    override fun setAdapter(adapter: MainFragment.MyAdapter) {
+        this.adapter = adapter
+    }
 
     override fun requestData() {
         Thread.sleep(1000)
         JsonObject().apply {
-            addProperty("type","get")
-            addProperty("class","203")
+            addProperty("type", "get")
+            addProperty("class", "203")
             sendMessage(this.toString())
         }
     }

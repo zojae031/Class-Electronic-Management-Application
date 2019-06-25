@@ -1,16 +1,17 @@
 package tzt.cema.util
 
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
+import io.reactivex.Observable
 import java.io.*
 import java.net.InetSocketAddress
 import java.net.Socket
+import java.net.SocketException
 import java.nio.charset.StandardCharsets
 
 class RxSocket {
 
     companion object {
-        private const val IP = "192.168.1.3"
+//        private const val IP = "192.168.1.3"
+        private const val IP = "172.16.24.159"
         private const val port = 5050
     }
 
@@ -34,21 +35,22 @@ class RxSocket {
     }
     private val out: PrintWriter by lazy { PrintWriter(writer, true) }
 
-    fun connect(): Flowable<String> = Flowable.create({ emitter ->
+    fun connect(): Observable<String> = Observable.create { emitter ->
         socket = Socket()
         socket!!.connect(InetSocketAddress(IP, port), 3000)
 
         while (!socket!!.isClosed) {
             try {
-                emitter.onNext(reader.readLine() ?: "error")
-            } catch (e :Exception) {
-                emitter.onError(e)
+                val data = reader.readLine() ?: "error"
+                emitter.onNext(data)
+            } catch (e: Exception) {
+                if (e is SocketException) e.printStackTrace()
+                else emitter.onError(e)
             }
-
         }
 
         emitter.onComplete()
-    }, BackpressureStrategy.BUFFER)
+    }
 
     fun sendData(data: String) {
         Thread { out.println(data) }.start()

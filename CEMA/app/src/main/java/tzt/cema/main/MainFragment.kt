@@ -37,11 +37,11 @@ class MainFragment(private val arr: JsonArray, private val presenter: MainPresen
                 mAdapter = MyAdapter()
                 mAdapter.setData(arr)
                 rv.adapter = mAdapter
-                manager = GridLayoutManager(view.root.context, 8)
+                manager = GridLayoutManager(view.root.context, 9)
                 rv.layoutManager = manager
-                screen.paintFlags = Paint.UNDERLINE_TEXT_FLAG;
+                screen.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+
                 exit.setOnClickListener {
-                    //TODO 클릭된 버튼 전송하기
                     val numArr = MutableList(40) { -1 }
                     var idx = 0
                     for (i in pcState) {
@@ -64,6 +64,7 @@ class MainFragment(private val arr: JsonArray, private val presenter: MainPresen
                     }
 
                 }
+
                 all.setOnClickListener {
                     for (i in 0 until 40) {
                         if (pcState[i].state == State.ON) {
@@ -72,6 +73,7 @@ class MainFragment(private val arr: JsonArray, private val presenter: MainPresen
                     }
                     mAdapter.notifyDataSetChanged()
                 }
+                presenter.setAdapter(mAdapter)
 
             }
 
@@ -138,13 +140,13 @@ class MainFragment(private val arr: JsonArray, private val presenter: MainPresen
 
                 when (pcState[pos].state) {
                     State.ON -> {
-                        setBackgroundColor(Color.BLUE)
+                        setBackgroundColor(Color.parseColor("#00DD00"))
                     }
                     State.OFF -> {
-                        setBackgroundColor(Color.RED)
+                        setBackgroundColor(Color.GRAY)
                     }
                     State.SELECT -> {
-                        setBackgroundColor(Color.GRAY)
+                        setBackgroundColor(Color.parseColor("#008800"))
                     }
                 }
 

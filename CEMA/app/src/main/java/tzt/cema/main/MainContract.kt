@@ -15,5 +15,6 @@ interface MainContract {
         fun requestData()
         fun closeSocket()
         fun sendMessage(data:String)
+        fun setAdapter(adapter: MainFragment.MyAdapter)
     }
 }
