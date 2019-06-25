@@ -30,7 +30,7 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
                     val array = ele.asJsonArray
                     view.setFragmentInfo(array)
                     for(i in array){
-                        Log.e("array : $i",i.toString())
+                        Log.e("array : ",i.toString())
                     }
 
                 }

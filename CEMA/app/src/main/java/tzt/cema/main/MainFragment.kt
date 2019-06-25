@@ -1,6 +1,8 @@
 package tzt.cema.main
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.graphics.Paint
@@ -8,16 +10,16 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.google.gson.JsonArray
-import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.cell.view.*
 import tzt.cema.R
 import tzt.cema.databinding.FragmentMainBinding
+import tzt.cema.dto.PC
 
 
 @SuppressLint("ValidFragment")
@@ -53,6 +55,7 @@ class MainFragment(private val arr: JsonArray) : Fragment() {
 
     inner class MyAdapter : RecyclerView.Adapter<ViewHolder>() {
         private var arr: JsonArray? = null
+        private var pcState = MutableList(40) { PC() }
         fun setData(arr: JsonArray) {
             this.arr = arr
         }
@@ -68,20 +71,57 @@ class MainFragment(private val arr: JsonArray) : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, pos: Int) {
+            val state = arr!!.get(pos).asJsonObject.get("flag").asBoolean
+            pcState[pos].ip = arr!!.get(pos).asJsonObject.get("ip").asString
+
             holder.btn.run {
                 text = (pos + 1).toString()
-
-                if (arr!!.get(pos).asJsonObject.get("flag").asBoolean) {
-                    setBackgroundColor(Color.BLUE)
-                } else {
-                    setBackgroundColor(Color.RED)
+                if(pcState[pos].state!=State.SELECT) {
+                    if (state) {
+                        pcState[pos].state = State.ON
+                    } else {
+                        pcState[pos].state = State.OFF
+                    }
+                }
+                setOnClickListener {
+                    pcState[pos].state = State.SELECT
+                    notifyDataSetChanged()
                 }
 
+                setOnLongClickListener {
+                    AlertDialog.Builder(context).apply {
+                        setTitle("PC 정보")
+                        setMessage("PC Number : ${pos + 1}\nIP : ${pcState[pos].ip}\nState : $state")
+                        setPositiveButton("확인") { _, _ -> }
+
+                        show()
+                    }
+                    true
+                }
+
+
+                when (pcState[pos].state) {
+                    State.ON -> {
+                        setBackgroundColor(Color.BLUE)
+                    }
+                    State.OFF -> {
+                        setBackgroundColor(Color.RED)
+                    }
+                    State.SELECT -> {
+                        setBackgroundColor(Color.GRAY)
+                    }
+                }
+
+
             }
-            
+
 
         }
 
 
+    }
+
+    enum class State {
+        ON, OFF, SELECT
     }
 }
