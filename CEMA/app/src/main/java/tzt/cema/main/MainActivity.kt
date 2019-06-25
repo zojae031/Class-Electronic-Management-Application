@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             })
 
         }
-
+        presenter.requestData()
     }
 
     override fun success(text: String) {

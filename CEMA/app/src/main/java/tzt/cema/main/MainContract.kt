@@ -9,6 +9,7 @@ interface MainContract {
 
     interface Presenter {
         fun connectServer()
+        fun requestData()
         fun closeSocket()
         fun sendMessage(data:String)
     }

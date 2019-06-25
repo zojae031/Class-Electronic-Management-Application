@@ -2,6 +2,7 @@ package tzt.cema.main
 
 import android.util.Log
 import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -23,16 +24,29 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
                 disposable?.dispose()
             }
             .subscribe(
-                { view.success(it) }
+                { jsonData ->
+                    val obj = JsonParser().parse(jsonData).asJsonObject
+                    val ele = JsonParser().parse(obj.get("pc").asString)
+                    val array = ele.asJsonArray
+
+                    for(i in array){
+                        Log.e("array : $i",i.toString())
+                    }
+
+                }
                 , { view.fail() }
             )
 
+
+
+    }
+
+    override fun requestData() {
         JsonObject().apply {
             addProperty("type","get")
             addProperty("class","203")
             sendMessage(this.toString())
         }
-
     }
 
     override fun sendMessage(data: String) {

@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets
 class RxSocket {
 
     companion object {
-        private const val IP = "172.16.7.86"
+        private const val IP = "172.16.24.159"
         private const val port = 5050
     }
 
