@@ -1,5 +1,7 @@
 package pc;
 
+import app.AppServer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,6 +20,7 @@ public class PcSocket extends Thread {
             room = pc_id.substring(0,4).equals(PcConstants.ROOM[0]) ? 0 : 1;
             this.inMsg = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.outMsg = new PrintWriter(socket.getOutputStream(), true);
+            AppServer.getInstance().send();
         }catch (IOException e) {
             e.printStackTrace();
         }

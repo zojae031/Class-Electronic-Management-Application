@@ -49,10 +49,19 @@ public class AppSocket extends Thread {
         }
     }
     public void sendMsg() {
+       JsonObject object = setObject(202);
+       object = reaction.reaction(object);
+       outMsg.println(object);
+       object = setObject(203);
+       object = reaction.reaction(object);
+       outMsg.println(object);
+
+    }
+
+    private JsonObject setObject(int room){
         JsonObject object = new JsonObject();
         object.addProperty("type", "get");
-        object.addProperty("class", "203");
-        object = reaction.reaction(object);
-        outMsg.println(object);
+        object.addProperty("class", room);
+        return object;
     }
 }

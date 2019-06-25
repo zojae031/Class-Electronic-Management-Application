@@ -18,10 +18,10 @@ public class PcServer extends Thread {
 
     private boolean statePC[][][] = {
             {{false},{false}},
-            {{false,false,false,false,false,false,false,false,false},
-            {false,false,false,false,false,false,false,false,false},
-            {false,false,false,false,false,false,false,false,false},
-            {false,false,false,false,false,false,false,false,false},}
+            {{false,true,false,false,false,false,false,false,true},
+            {false,false,false,false,true,false,true,false,false},
+            {false,false,true,false,false,false,true,false,false},
+            {true,false,false,false,false,false,false,false,false},}
     };
 
     synchronized public static PcServer getInstance(){
@@ -72,15 +72,23 @@ public class PcServer extends Thread {
     public void sendMsg(String pc, String room){
         JsonElement element = parser.parse(pc);
         JsonArray jsonArray = element.getAsJsonArray();
-        int i = 0;
+
 
         for(int j = 0; j < jsonArray.size(); j++){
             JsonObject object = (JsonObject) jsonArray.get(j);
-            for (PcSocket socketPc : pcs) {
-                if(socketPc.checkId(room+ "_"+object.get("num").getAsString())) {
-                    socketPc.sendClose();
-                    break;
+            if(room.equals("202")) {
+                for (PcSocket socketPc : pcs) {
+                    if (socketPc.checkId(room + "_" + object.get("num").getAsString())) {
+                        socketPc.sendClose();
+                        break;
+                    }
                 }
+            }else{
+                String pc_id = room + "_" + object.get("num").getAsString();
+                int number = Integer.valueOf(pc_id.substring(4,pc_id.length())) - 1;
+                int y = number / PcConstants.PCIP[1][0].length;
+                int x = number - y * PcConstants.PCIP[1][0].length;
+                PcServer.getInstance().setStatePC(1, y, x);
             }
         }
 
