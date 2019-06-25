@@ -94,10 +94,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         override fun getItem(i: Int): Fragment? {
             when (i) {
                 0 -> {
-                    return MainFragment(arr!!,presenter)
+                    return SeebalFragment()
                 }
                 1 -> {
-                    return SeebalFragment()
+                    return MainFragment(arr!!,presenter)
                 }
                 2 -> {
                     return UserFragment(user)
