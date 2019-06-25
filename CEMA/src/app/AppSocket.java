@@ -40,7 +40,8 @@ public class AppSocket extends Thread {
                 object = (JsonObject) parser.parse(msg);
                 object = reaction.reaction(object);
                 System.out.println(object);
-                outMsg.println(object.toString());
+                if((!object.get("type").getAsString().equals("res")) || (!object.get("class").getAsString().equals("202")))
+                    outMsg.println(object.toString());
 
 
             }
@@ -49,9 +50,6 @@ public class AppSocket extends Thread {
         }
     }
     public void sendMsg() {
-       JsonObject object = setObject(202);
-       object = reaction.reaction(object);
-       outMsg.println(object);
        object = setObject(203);
        object = reaction.reaction(object);
        outMsg.println(object);
