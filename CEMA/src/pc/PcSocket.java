@@ -27,18 +27,18 @@ public class PcSocket extends Thread {
         try{
             inMsg.readLine();
         }catch (Exception e){
-            setPcFlag();
+            setPcFlag(false);
             System.out.println("PcSocket ERROR");
         }
     }
 
-    private void setPcFlag(){
+    private void setPcFlag(boolean flag){
         int number = Integer.valueOf(pc_id.substring(4,pc_id.length())) - 1;
         int y = number / PcConstants.PCIP[room][0].length;
         int x = number - y * PcConstants.PCIP[room][0].length;
 
-        System.out.println(room + " y "+ y + "  x" + x + "       "+ PcConstants.PCIP[room][0].length);
         PcServer.getInstance().setStatePC(room, y, x);
+        if(flag) sendClose();
     }
     public boolean checkId(String pc){
         return pc_id.equals(pc);
@@ -46,7 +46,7 @@ public class PcSocket extends Thread {
     public void sendClose(){
         try{
             outMsg.println("close");
-            setPcFlag();
+            setPcFlag(false);
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -42,9 +42,17 @@ public class AppSocket extends Thread {
                 System.out.println(object);
                 outMsg.println(object.toString());
 
+
             }
         }catch (Exception e){
             System.out.println("AppSocket ERROR");
         }
+    }
+    public void sendMsg() {
+        JsonObject object = new JsonObject();
+        object.addProperty("type", "get");
+        object.addProperty("class", "203");
+        object = reaction.reaction(object);
+        outMsg.println(object);
     }
 }

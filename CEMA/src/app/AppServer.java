@@ -7,11 +7,17 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class AppServer extends Thread{
+    private static AppServer app;
     private ServerSocket appServer;
     private Socket socket;
     private PcServer pcServer;
     public ArrayList<AppSocket> clients;
-    public AppServer(){
+
+    public static synchronized AppServer getInstance(){
+        if(app == null) app = new AppServer();
+        return app;
+    }
+    private AppServer(){
         pcServer = new PcServer();
         pcServer.start();
         clients = new ArrayList<AppSocket>();
@@ -31,7 +37,9 @@ public class AppServer extends Thread{
             System.out.println("AppServer ERROR");
         }
     }
-//    public void close(String s){
-//        pcServer.sendMsg(s);
-//    }
+    public void send(){
+        for(int i = 0; i < clients.size(); i++) {
+            clients.get(i).sendMsg();
+        }
+    }
 }
