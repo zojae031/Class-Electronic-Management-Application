@@ -17,6 +17,6 @@
                 android:id="@+id/infomation"
                 android:text="여기는 정보가 들어오는곳"
                 android:layout_weight="8" android:layout_margin="12dp"
-                android:padding="8dp" android:textColor="#FFFFFF"/>
+                android:padding="8dp" android:textColor="@android:color/background_dark"/>
     </LinearLayout>
 </layout>
