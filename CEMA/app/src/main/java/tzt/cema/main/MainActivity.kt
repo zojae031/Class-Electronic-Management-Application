@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             this, tzt.cema.R.layout.activity_main
         )
     }
+    private var classInfo: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             })
 
         }
-        presenter.requestData()
+        presenter.requestData("203")
     }
 
     override fun success(text: String) {
@@ -77,8 +78,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
 
-    override fun setFragmentInfo(arr: JsonArray) {
+    override fun setFragmentInfo(arr: JsonArray, classInfo: String) {
         this.arr = arr
+        this.classInfo = classInfo
         binding.pager.adapter = PagerAdapter(supportFragmentManager, binding.tabCategory.tabCount, info)
 
     }
@@ -95,10 +97,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         override fun getItem(i: Int): Fragment? {
             when (i) {
                 0 -> {
-                    return SeebalFragment()
+                    return MainFragment(arr!!, presenter,classInfo!!)
                 }
                 1 -> {
-                    return MainFragment(arr!!,presenter)
+                    return MainFragment(arr!!, presenter,classInfo!!)
                 }
                 2 -> {
                     return UserFragment(user)

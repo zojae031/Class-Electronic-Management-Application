@@ -22,7 +22,7 @@ import tzt.cema.dto.PC
 
 
 @SuppressLint("ValidFragment")
-class MainFragment(private val arr: JsonArray, private val presenter: MainPresenter) : Fragment() {
+class MainFragment(private val arr: JsonArray, private val presenter: MainPresenter,private val classInfo:String) : Fragment() {
 
     internal lateinit var view: FragmentMainBinding
     private lateinit var mAdapter: MyAdapter
@@ -51,7 +51,7 @@ class MainFragment(private val arr: JsonArray, private val presenter: MainPresen
                     }
                     JsonObject().apply {
                         addProperty("type", "close")
-                        addProperty("class", "203")
+                        addProperty("class", classInfo)
                         val array = JsonArray()
                         for (i in 0 until idx) {
                             val data = JsonObject()
