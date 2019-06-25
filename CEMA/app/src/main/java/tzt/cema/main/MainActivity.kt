@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Toast
 import tzt.cema.databinding.ActivityMainBinding
 import tzt.cema.dto.User
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val info = intent.extras.get(USER_INFO) as User
+        presenter.connectServer()
 
         binding.run {
             tabCategory.addTab(binding.tabCategory.newTab().setText("202호"))
@@ -55,8 +57,21 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     }
 
+    override fun success(text: String) {
+        Log.e("text",text)
+    }
+
+    override fun fail() {
+
+    }
+
     override fun alertToast(text: String) {
         Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        presenter.closeSocket()
+        super.onDestroy()
     }
 
     companion object {

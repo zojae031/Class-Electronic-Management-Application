@@ -17,6 +17,7 @@ class MainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (!::view.isInitialized) {
             view = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
+
         }
         return view.root
     }
