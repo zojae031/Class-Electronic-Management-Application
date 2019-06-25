@@ -12,12 +12,12 @@ import tzt.cema.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
-    internal var view: FragmentMainBinding?=null
+    internal lateinit var view: FragmentMainBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (view == null) {
+        if (!::view.isInitialized) {
             view = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
         }
-        return view!!.root
+        return view.root
     }
 }
