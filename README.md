@@ -1,4 +1,4 @@
-﻿# Class-Electronic-Management-Application
+# Class-Electronic-Management-Application
 ### 2019. 06. 25 세종대학교 제 6회 SW 인공지능 해커톤 [금상]
 
 [<img src="./img/logo.png" width="150" height="150">](https://youtu.be/HcrJrXeyrzE) ``← 시연영상``
