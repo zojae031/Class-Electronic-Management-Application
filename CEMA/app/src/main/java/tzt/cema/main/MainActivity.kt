@@ -88,7 +88,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
 
-
     companion object {
         private const val USER_INFO = "USER_INFO"
         fun getIntent(context: Context?, user: User) = Intent(context, MainActivity::class.java).apply {
@@ -104,7 +103,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
                     return SubFragment(presenter)
                 }
                 1 -> {
-                    return MainFragment(arr!!, presenter,classInfo!!)
+                    return MainFragment(arr!!, presenter, classInfo!!)
                 }
                 2 -> {
                     return UserFragment(user)

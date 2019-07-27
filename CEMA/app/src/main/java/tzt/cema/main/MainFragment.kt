@@ -22,7 +22,8 @@ import tzt.cema.dto.PC
 
 
 @SuppressLint("ValidFragment")
-class MainFragment(private val arr: JsonArray, private val presenter: MainPresenter,private val classInfo:String) : Fragment() {
+class MainFragment(private val arr: JsonArray, private val presenter: MainPresenter, private val classInfo: String) :
+    Fragment() {
 
     internal lateinit var view: FragmentMainBinding
     private lateinit var mAdapter: MyAdapter

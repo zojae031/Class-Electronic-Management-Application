@@ -10,8 +10,8 @@ import java.nio.charset.StandardCharsets
 class RxSocket {
 
     companion object {
-                private const val IP = "192.168.1.3"
-//        private const val IP = "223.195.29.127"
+        private const val IP = "192.168.0.9"
+        //        private const val IP = "223.195.29.127"
 //        private const val IP = "192.168.1.155"
         private const val port = 5050
     }
@@ -54,7 +54,7 @@ class RxSocket {
     }
 
     fun sendData(data: String) {
-        Thread { if(socket?.isConnected!!)out.println(data) }.start()
+        Thread { if (socket?.isConnected!!) out.println(data) }.start()
     }
 
     fun closeSocket() {
